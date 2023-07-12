@@ -1,0 +1,15 @@
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\bin\Debug\net7.0\ExtraVert.exe
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\bin\Debug\net7.0\ExtraVert.deps.json
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\bin\Debug\net7.0\ExtraVert.runtimeconfig.json
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\bin\Debug\net7.0\ExtraVert.dll
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\bin\Debug\net7.0\ExtraVert.pdb
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\obj\Debug\net7.0\ExtraVert.csproj.AssemblyReference.cache
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\obj\Debug\net7.0\ExtraVert.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\obj\Debug\net7.0\ExtraVert.AssemblyInfoInputs.cache
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\obj\Debug\net7.0\ExtraVert.AssemblyInfo.cs
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\obj\Debug\net7.0\ExtraVert.csproj.CoreCompileInputs.cache
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\obj\Debug\net7.0\ExtraVert.dll
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\obj\Debug\net7.0\refint\ExtraVert.dll
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\obj\Debug\net7.0\ExtraVert.pdb
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\obj\Debug\net7.0\ExtraVert.genruntimeconfig.cache
+C:\Users\Clove\workspace\foundations\csharp\ExtraVert\obj\Debug\net7.0\ref\ExtraVert.dll
