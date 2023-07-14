@@ -105,12 +105,14 @@ void ViewPlantDetails() {
         try {
             int response = int.Parse(Console.ReadLine()!.Trim());
             chosenPlant = plants[response - 1]; 
+
+            if( response <1 || response > plants.Count) {
+                Console.WriteLine("Please enter a valid plant number");
+                return;
+            }
         }
         catch (FormatException) {
-            Console.WriteLine("Please type only integers");
-        }
-        catch (ArgumentOutOfRangeException) {
-            Console.WriteLine("Please choose an existing item only");
+            Console.WriteLine("Please enter a valid number.");
         }
         catch (Exception ex) {
             Console.WriteLine(ex);
@@ -208,8 +210,6 @@ void adoptPlant() {
 
     Console.WriteLine($"You have adopted the {plantToAdopt.Species}!");
 
-    //update the plants list to reflect the updated Sold status
-    plants = plants.Where(plant => plant != plantToAdopt).ToList(); // converts filtered response to a new list
 
 }
 
