@@ -4,35 +4,40 @@
         AskingPrice = 1.99m,
         LightNeeds = 1,
         City = "Nashville",
-        Sold = false
+        Sold = false,
+        Zip = "12345"
     },
     new Plant() {
         Species = "Japanese stiltgrass",
         AskingPrice = 19.99m,
         LightNeeds = 2,
         City = "Cincinatti",
-        Sold = false
+        Sold = false,
+        Zip = "65345"
     },
     new Plant() {
         Species = "Oat",
         AskingPrice = 5.99m,
         LightNeeds = 3,
         City = "Carthage",
-        Sold = true
+        Sold = false,
+        Zip = "12984"
     },
     new Plant() {
         Species = "Tree of heaven",
         AskingPrice = 99.99m,
         LightNeeds = 4,
         City = "Detriot",
-        Sold = false
+        Sold = false,
+        Zip = "94567"
     },
     new Plant() {
         Species = "Norway maple",
         AskingPrice = 12.99m,
         LightNeeds = 5,
         City = "Cookeville",
-        Sold = false
+        Sold = false,
+        Zip = "98765"
     }
 };
 
@@ -55,28 +60,30 @@ while(choice != "0") {
         Console.WriteLine("Goodbye!");
     }
     else if ( choice == "1") {
-        Console.WriteLine("Display all plants");
+        ViewPlantDetails();
         Console.WriteLine("Press any key to continue.");
         Console.ReadKey();
     }
     else if ( choice == "2") {
-        Console.WriteLine("Post a plant to be adopted");
+        addPlant();
         Console.WriteLine("Press any key to continue.");
         Console.ReadKey();
     }
     else if( choice == "3") {
-        Console.WriteLine("Adopt a plant");
+        adoptPlant();
         Console.WriteLine("Press any key to continue.");
         Console.ReadKey();
     }
     else if(choice == "4") {
-        Console.WriteLine("Delist a plant");
+        removePlant();
         Console.WriteLine("Press any key to continue.");
         Console.ReadKey();
     }
     else {
-        Console.WriteLine("\nPlease enter a number between 0 and 4\n");
+        Console.WriteLine("\nPlease enter a number within range\n");
     }
+
+    
 }
 
 
@@ -90,4 +97,152 @@ void ViewPlantDetails() {
     for (int i = 0; i < plants.Count; i++) {
         Console.WriteLine($"{i+1}. {plants[i].Species}");
     }
+
+    Plant chosenPlant = null!;
+
+    while (chosenPlant == null) {
+        Console.WriteLine("Please Enter a number for which plant you'd like to choose: ");
+        try {
+            int response = int.Parse(Console.ReadLine()!.Trim());
+            chosenPlant = plants[response - 1]; 
+
+            if( response <1 || response > plants.Count) {
+                Console.WriteLine("Please enter a valid plant number");
+                return;
+            }
+        }
+        catch (FormatException) {
+            Console.WriteLine("Please enter a valid number.");
+        }
+        catch (Exception ex) {
+            Console.WriteLine(ex);
+            Console.WriteLine("Something went wrong. Please try again.");
+        }
+    }
+
+    Console.WriteLine($@"The {chosenPlant.Species} in {chosenPlant.City} {(chosenPlant.Sold ? "was sold" : "is available")} for {chosenPlant.AskingPrice} dollars.");
+}
+
+void addPlant() {
+    Console.WriteLine("Add a new plant");
+    Console.WriteLine("Enter the species:");
+    string species = Console.ReadLine()!;
+    if (String.IsNullOrEmpty(species)) {
+        Console.WriteLine("Species cannot be empty");
+        return;
+    }
+    Console.WriteLine("Enter the plants light needs (1-5)");
+    if (!Int32.TryParse(Console.ReadLine(), out int lightNeeds) || lightNeeds < 0 || lightNeeds > 5)
+    {
+        Console.WriteLine("Invalid light needs. Please enter a number between 1 and 5.");
+        return;
+    }
+    Console.WriteLine("Enter the asking price:");
+    string askingPriceInput = Console.ReadLine()!;
+    if(!Decimal.TryParse(askingPriceInput, out decimal askingPrice)) {
+        Console.WriteLine("Invalid asking price. Please enter a valid decimal number for the asking price.");
+        return;
+    }
+    Console.WriteLine("Enter the city:");
+    string city = Console.ReadLine()!;
+    if(String.IsNullOrEmpty(city)) {
+        Console.WriteLine("City cannot be empty");
+        return;
+    }
+    Console.WriteLine("Enter the zip code");
+    string zip = Console.ReadLine()!;
+    if(String.IsNullOrEmpty(zip)) {
+        Console.WriteLine("Zip code cannot be empty");
+        return;
+    }
+
+    Plant newPlant = new() {
+        Species = species,
+        LightNeeds = lightNeeds,
+        AskingPrice = askingPrice,
+        City = city,
+        Zip = zip,
+        Sold = false
+    };
+
+    plants.Add(newPlant);
+
+    Console.WriteLine("Plants added succesfully!");
+}
+
+void adoptPlant() {
+    Console.WriteLine("Adopt a plant!");
+
+    List<Plant> availablePlants = plants.Where(plant => !plant.Sold).ToList(); // lambda expression. Like anonymous function in JS
+
+    if (availablePlants.Count == 0) {
+        Console.WriteLine("No available plants to adopt.");
+        return;
+    }
+
+    for (int i = 0; i < availablePlants.Count; i++) {
+        Console.WriteLine($"{i + 1}. {availablePlants[i].Species}");
+    }
+
+    Plant plantToAdopt = null!;
+
+    while (plantToAdopt == null) {
+        Console.WriteLine("Enter the number of the plant you would like to adopt: ");
+
+        try {
+            int response = int.Parse(Console.ReadLine()!.Trim());
+            if (response < 1 || response > availablePlants.Count) {
+                Console.WriteLine("Please enter a valid plant number.");
+                continue;
+            }
+
+            plantToAdopt = availablePlants[response -1];
+            plantToAdopt.Sold = true; 
+        }
+        catch (FormatException) {
+            Console.WriteLine("Please enter a valid number.");
+        }
+        catch (Exception ex) {
+            Console.WriteLine(ex);
+            Console.WriteLine("Something went wrong. Please try again.");
+        }
+    }
+
+    Console.WriteLine($"You have adopted the {plantToAdopt.Species}!");
+
+
+}
+
+void removePlant() {
+    Console.WriteLine("Remove a plant");
+
+    for (int i = 0; i < plants.Count; i++) {
+        Console.WriteLine($"{i + 1}. {plants[i].Species}");
+    }
+
+    Plant plantToRemove = null!;
+    while (plantToRemove == null) {
+        Console.WriteLine("Enter the number of the plant to remove: ");
+
+        try {
+            int response = int.Parse(Console.ReadLine()!.Trim());
+            if (response < 1 || response > plants.Count) {
+                Console.WriteLine("Please enter a valid plant number.");
+                continue;
+            }
+
+            plantToRemove = plants[response - 1];
+        }
+        catch (FormatException) {
+            Console.WriteLine("Please enter a valid number");
+        }
+        catch (Exception ex) {
+            Console.WriteLine(ex);
+            Console.WriteLine("Something went wrong. Please try again.");
+        }
+    }
+
+    plants.Remove(plantToRemove);
+
+    Console.WriteLine("Plant removed successfully!");
 }
