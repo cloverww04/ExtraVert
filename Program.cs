@@ -42,7 +42,6 @@
 };
 
 Random random = new();
-int randomInteger = random.Next(1, plants.Count);
 
 string greeting = @"Welcome to ExtraVert!
 We got plants if you got money.";
