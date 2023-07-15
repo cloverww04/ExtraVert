@@ -41,6 +41,8 @@
     }
 };
 
+Random random = new();
+
 string greeting = @"Welcome to ExtraVert!
 We got plants if you got money.";
 Console.WriteLine(greeting);
@@ -52,7 +54,8 @@ while(choice != "0") {
     1. Display all plants
     2. Post a plant to be adopted
     3. Adopt a plant
-    4. Delist a plant");
+    4. Delist a plant
+    5. Plant of the day");
     
     choice = Console.ReadLine()!;
 
@@ -78,6 +81,9 @@ while(choice != "0") {
         removePlant();
         Console.WriteLine("Press any key to continue.");
         Console.ReadKey();
+    }
+    else if (choice == "5") {
+        plantOfDay();
     }
     else {
         Console.WriteLine("\nPlease enter a number within range\n");
@@ -167,7 +173,7 @@ void addPlant() {
 
     plants.Add(newPlant);
 
-    Console.WriteLine("Plants added succesfully!");
+    Console.WriteLine("Plant added succesfully!");
 }
 
 void adoptPlant() {
@@ -245,4 +251,21 @@ void removePlant() {
     plants.Remove(plantToRemove);
 
     Console.WriteLine("Plant removed successfully!");
+}
+
+void plantOfDay() {
+    Plant plantOfTheDay = null!;
+    int randomIndex;
+
+    do
+    {
+        randomIndex = random.Next(0, plants.Count);
+        plantOfTheDay = plants[randomIndex];
+    }
+    while (plantOfTheDay.Sold);
+
+    Console.WriteLine($@"Plant Of the Day:
+        The plant of the day is a {plantOfTheDay.Species} and it is located in {plantOfTheDay.City}.
+        It has a light need of {plantOfTheDay.LightNeeds} and is priced at {plantOfTheDay.AskingPrice} dollars.");
+
 }
