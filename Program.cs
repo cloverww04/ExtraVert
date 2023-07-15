@@ -55,7 +55,8 @@ while(choice != "0") {
     2. Post a plant to be adopted
     3. Adopt a plant
     4. Delist a plant
-    5. Plant of the day");
+    5. Plant of the day
+    6. Search by plants light needs");
     
     choice = Console.ReadLine()!;
 
@@ -84,6 +85,13 @@ while(choice != "0") {
     }
     else if (choice == "5") {
         plantOfDay();
+        Console.WriteLine("Press any key to continue.");
+        Console.ReadKey();
+    }
+    else if (choice == "6") {
+        search();
+        Console.WriteLine("Press any key to continue.");
+        Console.ReadKey();
     }
     else {
         Console.WriteLine("\nPlease enter a number within range\n");
@@ -268,4 +276,28 @@ void plantOfDay() {
         The plant of the day is a {plantOfTheDay.Species} and it is located in {plantOfTheDay.City}.
         It has a light need of {plantOfTheDay.LightNeeds} and is priced at {plantOfTheDay.AskingPrice} dollars.");
 
+}
+
+void search()
+{
+    Console.WriteLine("Enter a maximum light need between 1 and 5:");
+    if (!Int32.TryParse(Console.ReadLine(), out int response) || response < 1 || response > 5)
+    {
+        Console.WriteLine("Please enter a valid number between 1 and 5.");
+        return;
+    }
+
+    List<Plant> availablePlants = plants.Where(plant => plant.LightNeeds <= response && !plant.Sold).ToList();
+
+    if (availablePlants.Count == 0)
+    {
+        Console.WriteLine("No available plants matching the light needs.");
+    }
+    else
+    {
+        for (int i = 0; i < availablePlants.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. {availablePlants[i].Species}");
+        }
+    }
 }
