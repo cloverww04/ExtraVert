@@ -1,4 +1,6 @@
-﻿List<Plant> plants = new() {
+﻿using Microsoft.VisualBasic;
+
+List<Plant> plants = new() {
     new Plant() {
         Species = "Hemlock",
         AskingPrice = 1.99m,
@@ -200,20 +202,21 @@ void addPlant() {
     }
 
     Console.WriteLine("Enter the expiration date (Year): ");
-    if(!Int32.TryParse(Console.ReadLine(), out int year)) {
-        Console.WriteLine("Invalid year. Please enter a valid year");
+    string yearInput = Console.ReadLine()!;
+    if( !Int32.TryParse(yearInput, out int year) || yearInput.Length != 4) {
+        Console.WriteLine("Invalid year. Please enter a valid year with 4 digits.");
         return;
     }
 
     Console.WriteLine("Enter the expiration date (Month): ");
-    if(!Int32.TryParse(Console.ReadLine(), out int month)) {
-        Console.WriteLine("Invalid month. Please enter a valid month");
+    if(!Int32.TryParse(Console.ReadLine(), out int month) || month < 1 || month > 12) {
+        Console.WriteLine("Invalid month. Please enter a valid month between 1 and 12");
         return;
     }
 
     Console.WriteLine("Enter the expiration date (Day): ");
-    if(!Int32.TryParse(Console.ReadLine(), out int day)) {
-        Console.WriteLine("Invalid day. Please enter a valid day");
+    if(!Int32.TryParse(Console.ReadLine(), out int day) || day < 1 || day > 31) {
+        Console.WriteLine("Invalid day. Please enter a valid day between 1 and 31");
         return;
     }
 
