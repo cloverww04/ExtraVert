@@ -5,7 +5,8 @@
         LightNeeds = 1,
         City = "Nashville",
         Sold = false,
-        Zip = "12345"
+        Zip = "12345",
+        AvailableUntil = new DateTime(2023, 7, 30)
     },
     new Plant() {
         Species = "Japanese stiltgrass",
@@ -13,7 +14,8 @@
         LightNeeds = 2,
         City = "Cincinatti",
         Sold = false,
-        Zip = "65345"
+        Zip = "65345",
+        AvailableUntil = new DateTime(2023, 7, 30)
     },
     new Plant() {
         Species = "Oat",
@@ -21,7 +23,8 @@
         LightNeeds = 3,
         City = "Carthage",
         Sold = false,
-        Zip = "12984"
+        Zip = "12984",
+        AvailableUntil = new DateTime(2023, 7, 30)
     },
     new Plant() {
         Species = "Tree of heaven",
@@ -29,7 +32,8 @@
         LightNeeds = 4,
         City = "Detriot",
         Sold = false,
-        Zip = "94567"
+        Zip = "94567",
+        AvailableUntil = new DateTime(2023, 7, 30)
     },
     new Plant() {
         Species = "Norway maple",
@@ -37,7 +41,8 @@
         LightNeeds = 5,
         City = "Cookeville",
         Sold = false,
-        Zip = "98765"
+        Zip = "98765",
+        AvailableUntil = new DateTime(2023, 7, 30)
     }
 };
 
@@ -134,7 +139,7 @@ void ViewPlantDetails() {
         }
     }
 
-    Console.WriteLine($@"The {chosenPlant.Species} in {chosenPlant.City} {(chosenPlant.Sold ? "was sold" : "is available")} for {chosenPlant.AskingPrice} dollars.");
+    Console.WriteLine($@"The {chosenPlant.Species} in {chosenPlant.City} {(chosenPlant.Sold ? "was sold" : (chosenPlant.AvailableUntil >= DateTime.Now ? "is available" : "is no longer available for adoption"))} for {chosenPlant.AskingPrice} dollars.");
 }
 
 void addPlant() {
@@ -145,24 +150,28 @@ void addPlant() {
         Console.WriteLine("Species cannot be empty");
         return;
     }
+
     Console.WriteLine("Enter the plants light needs (1-5)");
     if (!Int32.TryParse(Console.ReadLine(), out int lightNeeds) || lightNeeds < 0 || lightNeeds > 5)
     {
         Console.WriteLine("Invalid light needs. Please enter a number between 1 and 5.");
         return;
     }
+
     Console.WriteLine("Enter the asking price:");
     string askingPriceInput = Console.ReadLine()!;
     if(!Decimal.TryParse(askingPriceInput, out decimal askingPrice)) {
         Console.WriteLine("Invalid asking price. Please enter a valid decimal number for the asking price.");
         return;
     }
+
     Console.WriteLine("Enter the city:");
     string city = Console.ReadLine()!;
     if(String.IsNullOrEmpty(city)) {
         Console.WriteLine("City cannot be empty");
         return;
     }
+
     Console.WriteLine("Enter the zip code");
     string zip = Console.ReadLine()!;
     if(String.IsNullOrEmpty(zip)) {
@@ -170,13 +179,34 @@ void addPlant() {
         return;
     }
 
+    Console.WriteLine("Enter the expiration date (Year): ");
+    if(!Int32.TryParse(Console.ReadLine(), out int year)) {
+        Console.WriteLine("Invalid year. Please enter a valid year");
+        return;
+    }
+
+    Console.WriteLine("Enter the expiration date (Month): ");
+    if(!Int32.TryParse(Console.ReadLine(), out int month)) {
+        Console.WriteLine("Invalid month. Please enter a valid month");
+        return;
+    }
+
+    Console.WriteLine("Enter the expiration date (Day): ");
+    if(!Int32.TryParse(Console.ReadLine(), out int day)) {
+        Console.WriteLine("Invalid day. Please enter a valid day");
+        return;
+    }
+
+    DateTime expirationDate = new (year, month, day);
+
     Plant newPlant = new() {
         Species = species,
         LightNeeds = lightNeeds,
         AskingPrice = askingPrice,
         City = city,
         Zip = zip,
-        Sold = false
+        Sold = false,
+        AvailableUntil = expirationDate 
     };
 
     plants.Add(newPlant);
@@ -187,7 +217,7 @@ void addPlant() {
 void adoptPlant() {
     Console.WriteLine("Adopt a plant!");
 
-    List<Plant> availablePlants = plants.Where(plant => !plant.Sold).ToList(); // lambda expression. Like anonymous function in JS
+    List<Plant> availablePlants = plants.Where(plant => !plant.Sold && plant.AvailableUntil >= DateTime.Now).ToList(); // lambda expression. Like anonymous function in JS
 
     if (availablePlants.Count == 0) {
         Console.WriteLine("No available plants to adopt.");
@@ -197,6 +227,9 @@ void adoptPlant() {
     for (int i = 0; i < availablePlants.Count; i++) {
         Console.WriteLine($"{i + 1}. {availablePlants[i].Species}");
     }
+
+    int numOfAvailablePlants = availablePlants.Count;
+    Console.WriteLine($"The number of available plants: {numOfAvailablePlants}");
 
     Plant plantToAdopt = null!;
 
