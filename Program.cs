@@ -358,6 +358,7 @@ void search()
     }
 }
 
+// used a List paramter for the stats instead of listing plant.Species only
 void showStats(List<Plant> plants)
 {
     decimal lowestPrice = Decimal.MaxValue;
