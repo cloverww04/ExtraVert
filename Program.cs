@@ -22,7 +22,7 @@
         AskingPrice = 5.99m,
         LightNeeds = 3,
         City = "Carthage",
-        Sold = false,
+        Sold = true,
         Zip = "12984",
         AvailableUntil = new DateTime(2023, 7, 30)
     },
@@ -30,7 +30,7 @@
         Species = "Tree of heaven",
         AskingPrice = 99.99m,
         LightNeeds = 4,
-        City = "Detriot",
+        City = "Detroit",
         Sold = false,
         Zip = "94567",
         AvailableUntil = new DateTime(2023, 7, 30)
@@ -61,46 +61,66 @@ while(choice != "0") {
     3. Adopt a plant
     4. Delist a plant
     5. Plant of the day
-    6. Search by plants light needs");
+    6. Search by plants light needs
+    7. View app statistics");
     
     choice = Console.ReadLine()!;
 
-    if (choice == "0") {
-        Console.WriteLine("Goodbye!");
+    switch (choice)
+    {
+        case "0":
+            Console.WriteLine("Goodbye!");
+            break;
+        case "1":
+            ViewPlantDetails();
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Console.Clear();
+            break;
+        case "2":
+            addPlant();
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Console.Clear();
+            break;
+        case "3":
+            adoptPlant();
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Console.Clear();
+            break;
+        case "4":
+            removePlant();
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Console.Clear();
+            break;
+        case "5":
+            plantOfDay();
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Console.Clear();
+            break;
+        case "6":
+            search();
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Console.Clear();
+            break;
+        case "7":
+            showStats(plants);
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            Console.Clear();
+            break;
+        default:
+            Console.WriteLine("\nPlease enter a number within range\n");
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
+            break;
     }
-    else if ( choice == "1") {
-        ViewPlantDetails();
-        Console.WriteLine("Press any key to continue.");
-        Console.ReadKey();
-    }
-    else if ( choice == "2") {
-        addPlant();
-        Console.WriteLine("Press any key to continue.");
-        Console.ReadKey();
-    }
-    else if( choice == "3") {
-        adoptPlant();
-        Console.WriteLine("Press any key to continue.");
-        Console.ReadKey();
-    }
-    else if(choice == "4") {
-        removePlant();
-        Console.WriteLine("Press any key to continue.");
-        Console.ReadKey();
-    }
-    else if (choice == "5") {
-        plantOfDay();
-        Console.WriteLine("Press any key to continue.");
-        Console.ReadKey();
-    }
-    else if (choice == "6") {
-        search();
-        Console.WriteLine("Press any key to continue.");
-        Console.ReadKey();
-    }
-    else {
-        Console.WriteLine("\nPlease enter a number within range\n");
-    }
+
+
 
     
 }
@@ -139,7 +159,7 @@ void ViewPlantDetails() {
         }
     }
 
-    Console.WriteLine($@"The {chosenPlant.Species} in {chosenPlant.City} {(chosenPlant.Sold ? "was sold" : (chosenPlant.AvailableUntil >= DateTime.Now ? "is available" : "is no longer available for adoption"))} for {chosenPlant.AskingPrice} dollars.");
+    Console.WriteLine($"The {chosenPlant.Species} in {chosenPlant.City} {(chosenPlant.Sold ? "was sold" : (chosenPlant.AvailableUntil >= DateTime.Now ? "is available" : "is no longer available for adoption"))} for {chosenPlant.AskingPrice} dollars.");
 }
 
 void addPlant() {
@@ -334,3 +354,70 @@ void search()
         }
     }
 }
+
+void showStats(List<Plant> plants)
+{
+    decimal lowestPrice = Decimal.MaxValue;
+    string lowestPricePlantName = null!;
+    int numOfAvailablePlants = plants.Count(plant => !plant.Sold );
+    int numOfAdoptedPlants = plants.Count(plant => plant.Sold);
+    string highestLightLevelPlant = null!;
+    int highestLightLevel = 0;
+    int totalLightLevel = 0;
+
+    foreach (Plant plant in plants)
+    {
+        if (plant.AskingPrice < lowestPrice)
+        {
+            lowestPrice = plant.AskingPrice;
+            lowestPricePlantName = plant.Species!;
+        }
+
+        if (plant.LightNeeds > highestLightLevel) {
+            highestLightLevel = plant.LightNeeds;
+            highestLightLevelPlant = plant.Species!;
+        }
+        totalLightLevel += plant.LightNeeds;
+    }
+
+   
+    if (lowestPricePlantName != null)
+    {
+        Console.WriteLine($"The lowest price plant is the {lowestPricePlantName} with a asking price of {lowestPrice}.");
+    }
+    else
+    {
+        Console.WriteLine("No plants found.");
+    }
+
+    if (numOfAvailablePlants != 0) {
+        Console.WriteLine($"The number of available plants is {numOfAvailablePlants}.");
+    }
+    else {
+        Console.WriteLine("No plants found.");
+    }
+
+    if (highestLightLevelPlant != null) {
+        Console.WriteLine($"The plant with the highest light level is the {highestLightLevelPlant} with a light level of {highestLightLevel}.");
+    }
+    else {
+        Console.WriteLine("No plants found.");
+    }
+
+    if (totalLightLevel != 0) {
+        double averageLightLevel = totalLightLevel / (double)numOfAvailablePlants;
+        Console.WriteLine($"The average light level of all the plants is {averageLightLevel}.");
+    }
+    else {
+        Console.WriteLine("No plants found.");
+    }
+
+    if (plants.Count != 0) {
+        double adoptionPercentage = (double) numOfAdoptedPlants / plants.Count * 100;
+        Console.WriteLine($"The percentage of adopted plants is {adoptionPercentage}%.");
+    }
+    else {
+        Console.WriteLine("No plants found.");
+    }
+}
+
